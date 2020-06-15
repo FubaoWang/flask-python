@@ -19,16 +19,16 @@ podTemplate(label: 'jnlp-slave', cloud: 'kubernetes',
 {
     node("jnlp-slave"){
         stage('Git Checkout'){
-					git branch: '${branch}', url: 'https://github.com/sunny0826/flask-python.git'
+					git branch: '${branch}', url: 'https://github.com/FubaoWang/flask-python'
 				}
 				stage('Build and Push Image'){
-					withCredentials([usernamePassword(credentialsId: 'docker-register', passwordVariable: 'dockerPassword', usernameVariable: 'dockerUser')]) {
-						sh '''
-						docker login -u ${dockerUser} -p ${dockerPassword}
-						docker build -t guoxudongdocker/flask-python:${Tag} .
-						docker push guoxudongdocker/flask-python:${Tag}
-						'''
-					}
+					
+					sh '''
+					docker build -t guoxudongdocker/flask-python:${Tag} .
+					docker tag  guoxudongdocker/flask-python:${Tag} 192.168.8.192/flask-python:${Tag}
+					docker push 192.168.8.192/flask-python:${Tag}
+					'''
+					
 				}
 				stage('Deploy to K8s'){
 					if ('true' == "${deploy}") {
