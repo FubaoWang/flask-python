@@ -2,10 +2,10 @@ podTemplate(label: 'jnlp-slave', cloud: 'kubernetes',
   containers: [
     containerTemplate(
         name: 'jnlp',
-        image: 'jenkins/jnlp-slave',
+        image: '192.168.8.192:5000/jnlp-slave',
         alwaysPullImage: true
     ),
-    containerTemplate(name: 'kubectl', image: 'guoxudongdocker/kubectl:v1.14.1', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'kubectl', image: '192.168.8.192:5000/kubectl:v1.14.1', command: 'cat', ttyEnabled: true),
   ],
   nodeSelector:'ci=jenkins',
   volumes: [
@@ -24,9 +24,9 @@ podTemplate(label: 'jnlp-slave', cloud: 'kubernetes',
 				stage('Build and Push Image'){
 					
 					sh '''
-					docker build -t guoxudongdocker/flask-python:${Tag} .
-					docker tag  guoxudongdocker/flask-python:${Tag} 192.168.8.192/flask-python:${Tag}
-					docker push 192.168.8.192/flask-python:${Tag}
+					docker build -t 192.168.8.192:5000/flask-python:${Tag} .
+					docker push 192.168.8.192:5000/flask-python:${Tag}
+					docker rmi  192.168.8.192:5000/flask-python:${Tag}
 					'''
 					
 				}
