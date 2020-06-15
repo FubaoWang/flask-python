@@ -2,10 +2,10 @@ podTemplate(label: 'jnlp-slave', cloud: 'kubernetes',
   containers: [
     containerTemplate(
         name: 'jnlp',
-        image: 'guoxudongdocker/jenkins-slave',
+        image: 'jenkins/jnlp-slave',
         alwaysPullImage: true
     ),
-		containerTemplate(name: 'kubectl', image: 'guoxudongdocker/kubectl:v1.14.1', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'kubectl', image: 'guoxudongdocker/kubectl:v1.14.1', command: 'cat', ttyEnabled: true),
   ],
   nodeSelector:'ci=jenkins',
   volumes: [
