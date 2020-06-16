@@ -3,7 +3,7 @@ podTemplate(label: label, cloud: 'kubernetes',
   containers: [
     containerTemplate(
         name: 'jnlp',
-        image: 'jenkins/jnlp-slave:3.27-1-alpine',
+        image: 'jenkins/jnlp-slave',
         alwaysPullImage: false,
 	privileged: true,
         args: '${computer.jnlpmac} ${computer.name}'
