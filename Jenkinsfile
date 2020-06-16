@@ -10,7 +10,7 @@ podTemplate(label: label, cloud: 'kubernetes',
     containerTemplate(name: 'docker', image: 'docker:18.06', command: 'cat', ttyEnabled: true,  privileged: true),
     containerTemplate(name: 'kubectl', image: '192.168.8.192:5000/kubectl:v1.14.1', command: 'cat', ttyEnabled: true, , privileged: true),
   ],
-  nodeSelector:'ci=jenkins',
+  nodeSelector:'disktype=ssd',
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
     hostPathVolume(mountPath: '/root/.m2', hostPath: '/root/.m2'),
