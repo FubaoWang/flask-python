@@ -1,4 +1,4 @@
-def label = "k8s-slave-${UUID.randomUUID().toString()}"
+def label = "slave"
 podTemplate(label: label, cloud: 'kubernetes',
   containers: [
     containerTemplate(
@@ -11,7 +11,7 @@ podTemplate(label: label, cloud: 'kubernetes',
     containerTemplate(name: 'docker', image: 'docker:18.06', command: 'cat', ttyEnabled: true,  privileged: true),
     containerTemplate(name: 'kubectl', image: '192.168.8.192:5000/kubectl:v1.14.1', command: 'cat', ttyEnabled: true, , privileged: true),
   ],
-  namespace: 'devops',serviceAccount: 'jenkins',automountServiceAccountToken: 'true',
+  namespace: 'devops',serviceAccount: 'jenkins',
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
     hostPathVolume(mountPath: '/root/.m2', hostPath: '/root/.m2'),
