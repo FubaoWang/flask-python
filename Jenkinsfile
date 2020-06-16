@@ -19,17 +19,10 @@ podTemplate(label: label, cloud: 'kubernetes',
 )
 {
     node(label){
-		stage('Test Docker') {
-		    container('docker') {
-			sh 'docker version'
-		    }
-		}
-
 		stage('Git Checkout'){
 		git branch: '${branch}', url: 'https://github.com/FubaoWang/flask-python'
 		}
 		stage('Build and Push Image'){
-
 			sh '''
 			docker build -t 192.168.8.192:5000/flask-python:${Tag} .
 			docker push 192.168.8.192:5000/flask-python:${Tag}
