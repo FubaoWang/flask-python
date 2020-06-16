@@ -1,25 +1,26 @@
-podTemplate(label: 'jnlp-slave', cloud: 'kubernetes',
+def label = "k8s-slave-${UUID.randomUUID().toString()}"
+podTemplate(label: label, cloud: 'kubernetes',
   containers: [
     containerTemplate(
         name: 'jnlp',
         image: '192.168.8.192:5000/jnlp-slave',
-        alwaysPullImage: true
+        alwaysPullImage: false,
+	privileged: true,
+        args: '${computer.jnlpmac} ${computer.name}'
     ),
-    containerTemplate(name: 'kubectl', image: '192.168.8.192:5000/kubectl:v1.14.1', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'docker', image: 'docker:18.06', command: 'cat', ttyEnabled: true,  privileged: true),
+    containerTemplate(name: 'kubectl', image: '192.168.8.192:5000/kubectl:v1.14.1', command: 'cat', ttyEnabled: true, , privileged: true),
   ],
-  nodeSelector:'ci=jenkins',
+  namespace: 'devops',serviceAccount: 'jenkins',automountServiceAccountToken: 'true',
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
-    hostPathVolume(mountPath: '/usr/bin/docker', hostPath: '/usr/bin/docker'),
-		hostPathVolume(mountPath: '/usr/local/jdk', hostPath: '/usr/local/jdk'),
-    hostPathVolume(mountPath: '/usr/local/maven', hostPath: '/usr/local/maven'),
-		secretVolume(mountPath: '/home/jenkins/.kube', secretName: 'devops-ctl'),
+    hostPathVolume(mountPath: '/root/.m2', hostPath: '/root/.m2'),
   ],
 )
 {
-    node("jnlp-slave"){
+    node(label){
         stage('Git Checkout'){
-					git branch: '${branch}', url: 'https://github.com/FubaoWang/flask-python'
+			        git branch: '${branch}', url: 'https://github.com/FubaoWang/flask-python'
 				}
 				stage('Build and Push Image'){
 					
