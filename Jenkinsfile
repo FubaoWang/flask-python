@@ -6,6 +6,7 @@ podTemplate(label: label, cloud: 'kubernetes',
         image: 'jenkins/jnlp-slave',
         alwaysPullImage: false,
 	privileged: true,
+	command: 'jenkins-slave'
         args: '${computer.jnlpmac} ${computer.name}'
     ),
     containerTemplate(name: 'docker', image: 'docker:18.06', command: 'cat', ttyEnabled: true,  privileged: true),
