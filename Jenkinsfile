@@ -3,7 +3,7 @@ podTemplate(label: label, cloud: 'kubernetes',
   containers: [
     containerTemplate(
         name: 'jnlp',
-        image: '192.168.8.192:5000/jnlp-slave',
+        image: 'jenkins/jnlp-slave:3.27-1-alpine',
         alwaysPullImage: false,
 	privileged: true,
         args: '${computer.jnlpmac} ${computer.name}'
@@ -19,7 +19,13 @@ podTemplate(label: label, cloud: 'kubernetes',
 )
 {
     node(label){
-        stage('Git Checkout'){
+				stage('Test Docker') {
+				    container('docker') {
+					sh 'docker version'
+				    }
+				}
+	    
+				stage('Git Checkout'){
 			        git branch: '${branch}', url: 'https://github.com/FubaoWang/flask-python'
 				}
 				stage('Build and Push Image'){
@@ -31,6 +37,7 @@ podTemplate(label: label, cloud: 'kubernetes',
 					'''
 					
 				}
+	    
 				stage('Deploy to K8s'){
 					if ('true' == "${deploy}") {
 						container('kubectl') {
