@@ -6,10 +6,9 @@ podTemplate(label: label, cloud: 'kubernetes',
         image: '192.168.8.192:5000/jnlp-slave',
         alwaysPullImage: false,
     ),
-    containerTemplate(name: 'docker', image: 'docker:18.06', command: 'cat', ttyEnabled: true,  privileged: true),
+    containerTemplate(name: 'docker', image: 'docker:19.03', command: 'cat', ttyEnabled: true,  privileged: true),
     containerTemplate(name: 'kubectl', image: '192.168.8.192:5000/kubectl:v1.14.1', command: 'cat', ttyEnabled: true, , privileged: true),
   ],
-  nodeSelector:'ci=jenkins',
   volumes: [
     hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock'),
     hostPathVolume(mountPath: '/usr/local/jdk', hostPath: '/usr/local/jdk'),
@@ -28,7 +27,6 @@ podTemplate(label: label, cloud: 'kubernetes',
 			docker push 192.168.8.192:5000/flask-python:${Tag}
 			docker rmi  192.168.8.192:5000/flask-python:${Tag}
 			'''
-
 		}
 
 		stage('Deploy to K8s'){
