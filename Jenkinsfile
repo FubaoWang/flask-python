@@ -13,7 +13,7 @@ node(label){
 
 	stage('Deploy to K8s'){
 		if ('true' == "${deploy}") {
-			# container('kubectl') 
+			// container('kubectl') 
 			sh '''
 			cd deploy/base
 			kustomize edit set image 192.168.8.192:5000/flask-python:${Tag}
