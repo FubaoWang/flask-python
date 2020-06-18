@@ -16,7 +16,7 @@ node(label){
 			// container('kubectl') 
 			sh '''
 			cd deploy/base
-			kustomize edit set image 192.168.8.192:5000/flask-python:${Tag}
+			kubectl kustomize edit set image 192.168.8.192:5000/flask-python:${Tag}
 			'''
 			echo "部署到 Kubernetes"
 			if ('prod' == "${ENV}") {
