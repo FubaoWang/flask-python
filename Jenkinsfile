@@ -37,7 +37,7 @@ node(label){
 		
 	}
 	stage('clean'){
-	      docker rmi $(docker images| grep 192.168.8.192:5000* | awk '{print $3}')
+	      docker rmi $(docker images | grep "192.168.8.192" | awk '{print $3}') 
 	}
 }
 
