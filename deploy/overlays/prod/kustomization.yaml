@@ -3,4 +3,4 @@ bases:
 patchesStrategicMerge:
 - healthcheck_patch.yaml
 - memorylimit_patch.yaml
-namespace: devops-prod
+namespace: default
