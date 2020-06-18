@@ -13,23 +13,22 @@ node(label){
 
 	stage('Deploy to K8s'){
 		if ('true' == "${deploy}") {
-			container('kubectl') {
+			# container('kubectl') 
+			sh '''
+			cd deploy/base
+			kustomize edit set image 192.168.8.192:5000/flask-python:${Tag}
+			'''
+			echo "部署到 Kubernetes"
+			if ('prod' == "${ENV}") {
 				sh '''
-				cd deploy/base
-				kustomize edit set image 192.168.8.192:5000/flask-python:${Tag}
+				# kustomize build deploy/overlays/prod | kubectl apply -f -
+				kubectl apply -k deploy/overlays/prod
 				'''
-				echo "部署到 Kubernetes"
-				if ('prod' == "${ENV}") {
-					sh '''
-					# kustomize build deploy/overlays/prod | kubectl apply -f -
-					kubectl apply -k deploy/overlays/prod
-					'''
-				}else {
-					sh '''
-					# kustomize build deploy/overlays/dev | kubectl apply -f -
-					kubectl apply -k deploy/overlays/dev
-					'''
-				}	
+			}else {
+				sh '''
+				# kustomize build deploy/overlays/dev | kubectl apply -f -
+				kubectl apply -k deploy/overlays/dev
+				'''
 			}
 		}else{
 			echo "跳过Deploy to K8s"
