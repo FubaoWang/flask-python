@@ -36,8 +36,8 @@ node(label){
 		}
 		
 	}
-	stage('clean'){
-	      docker rmi $(docker images | grep "192.168.8.192" | awk '{print $3}') 
+	stage('clean env'){
+	       echo "clean env"
 	}
 }
 
