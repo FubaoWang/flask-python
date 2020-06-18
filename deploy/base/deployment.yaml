@@ -5,12 +5,10 @@ metadata:
 spec:
   template:
     spec:
-      imagePullSecrets:
-      - name: registry-pull-secret
       containers:
         - name: test-cicd
           image: guoxudongdocker/flask-python:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: host-time
               mountPath: /etc/localtime
